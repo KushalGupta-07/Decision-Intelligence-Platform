@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CivicPulse AI - A premium AI-powered Decision Intelligence Platform for smart communities, urban analysis, predictive forecasting, and workflow automation.">
+    <title>CivicPulse AI | Decision Intelligence Platform</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="theme-glass-dark">
+    <!-- App Container -->
+    <div class="app-layout">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="app-sidebar">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-brain-circuit"></i>
+                </div>
+                <div class="brand-name">
+                    <h2>CivicPulse <span>AI</span></h2>
+                    <p>Decision Intelligence</p>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active" data-tab="dashboard" id="nav-dashboard">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="simulator" id="nav-simulator">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Scenario Simulator</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="chat" id="nav-chat">
+                    <i class="fa-solid fa-comments"></i>
+                    <span>Civic Assistant</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="automation" id="nav-automation">
+                    <i class="fa-solid fa-bolt-lightning"></i>
+                    <span>Automation Hub</span>
+                    <span class="badge" id="anomaly-badge">0</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="data-explorer" id="nav-data-explorer">
+                    <i class="fa-solid fa-database"></i>
+                    <span>RAG & Data Hub</span>
+                </a>
+                <a href="#" class="nav-item" data-tab="settings" id="nav-settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="api-indicator offline" id="api-status-badge">
+                    <span class="dot"></span>
+                    <span class="text">Local Engine</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="main-workspace">
+            
+            <!-- Global Header -->
+            <header class="app-header">
+                <div class="header-left">
+                    <h1 id="page-title">Executive Dashboard</h1>
+                    <div class="time-widget">
+                        <i class="fa-regular fa-clock"></i>
+                        <span id="simulation-time">2026-06-30 12:00</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <div class="header-stat">
+                        <span class="label">Active Scenario:</span>
+                        <span class="value" id="current-scenario-name">Baseline City</span>
+                    </div>
+                    <div class="notification-trigger" id="notification-bell">
+                        <i class="fa-solid fa-bell"></i>
+                        <span class="indicator hide" id="bell-indicator"></span>
+                    </div>
+                    <div class="user-avatar" id="avatar-btn">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80" alt="User Profile" class="avatar-img" />
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <main class="content-container">
+                
+                <!-- TAB 1: EXECUTIVE DASHBOARD -->
+                <section class="tab-content active" id="dashboard-tab">
+                    <!-- Stat Cards Row -->
+                    <div class="stats-grid">
+                        <div class="stat-card" id="card-mobility">
+                            <div class="stat-header">
+                                <span class="stat-title">Mobility Index</span>
+                                <div class="stat-icon mobility"><i class="fa-solid fa-car-side"></i></div>
+                            </div>
+                            <div class="stat-body">
+                                <span class="stat-value" id="stat-val-mobility">72%</span>
+                                <span class="stat-trend trend-up" id="stat-trend-mobility">
+                                    <i class="fa-solid fa-caret-up"></i> +1.2%
+                                </span>
+                            </div>
+                            <div class="stat-footer">Avg. Commute Time: <span id="stat-sub-mobility">24m</span></div>
+                        </div>
+
+                        <div class="stat-card" id="card-emissions">
+                            <div class="stat-header">
+                                <span class="stat-title">Air Quality Index</span>
+                                <div class="stat-icon environment"><i class="fa-solid fa-leaf"></i></div>
+                            </div>
+                            <div class="stat-body">
+                                <span class="stat-value" id="stat-val-emissions">45 AQI</span>
+                                <span class="stat-trend trend-down" id="stat-trend-emissions">
+                                    <i class="fa-solid fa-caret-down"></i> -3.4%
+                                </span>
+                            </div>
+                            <div class="stat-footer">Status: <span class="status-good" id="stat-sub-emissions">Excellent</span></div>
+                        </div>
+
+                        <div class="stat-card" id="card-energy">
+                            <div class="stat-header">
+                                <span class="stat-title">Energy Efficiency</span>
+                                <div class="stat-icon energy"><i class="fa-solid fa-bolt"></i></div>
+                            </div>
+                            <div class="stat-body">
+                                <span class="stat-value" id="stat-val-energy">86%</span>
+                                <span class="stat-trend trend-up" id="stat-trend-energy">
+                                    <i class="fa-solid fa-caret-up"></i> +0.8%
+                                </span>
+                            </div>
+                            <div class="stat-footer">Solar Grid Share: <span id="stat-sub-energy">32%</span></div>
+                        </div>
+
+                        <div class="stat-card" id="card-safety">
+                            <div class="stat-header">
+                                <span class="stat-title">Public Safety Rating</span>
+                                <div class="stat-icon safety"><i class="fa-solid fa-shield-halved"></i></div>
+                            </div>
+                            <div class="stat-body">
+                                <span class="stat-value" id="stat-val-safety">94%</span>
+                                <span class="stat-trend neutral" id="stat-trend-safety">
+                                    <i class="fa-solid fa-minus"></i> Stable
+                                </span>
+                            </div>
+                            <div class="stat-footer">Response Time: <span id="stat-sub-safety">5.2m</span></div>
+                        </div>
+
+                        <div class="stat-card" id="card-citizen">
+                            <div class="stat-header">
+                                <span class="stat-title">Citizen Satisfaction</span>
+                                <div class="stat-icon citizen"><i class="fa-solid fa-face-smile"></i></div>
+                            </div>
+                            <div class="stat-body">
+                                <span class="stat-value" id="stat-val-citizen">81%</span>
+                                <span class="stat-trend trend-up" id="stat-trend-citizen">
+                                    <i class="fa-solid fa-caret-up"></i> +2.1%
+                                </span>
+                            </div>
+                            <div class="stat-footer">Feedback Count: <span id="stat-sub-citizen">1.2k</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="charts-grid">
+                        <div class="chart-container large">
+                            <div class="chart-header">
+                                <h3>Mobility & Transit Flow</h3>
+                                <div class="chart-actions">
+                                    <span class="badge-tag">Real-time</span>
+                                </div>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-mobility-flow"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Grid Load vs. Green Energy</h3>
+                                <div class="chart-actions">
+                                    <span class="badge-tag">Solar Integration</span>
+                                </div>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-energy-grid"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>AQI Level Trends</h3>
+                                <div class="chart-actions">
+                                    <span class="badge-tag">Environmental Sensors</span>
+                                </div>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-aqi-trends"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Citizen Sentiment Breakdown</h3>
+                                <div class="chart-actions">
+                                    <span class="badge-tag">Weekly Polls</span>
+                                </div>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-citizen-sentiment"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mini Live Alert Grid -->
+                    <div class="dashboard-footer-grid">
+                        <div class="panel-card anomaly-summary-card">
+                            <div class="panel-header">
+                                <h3>Recent System Anomalies</h3>
+                                <a href="#" class="view-all-link" data-tab-go="automation">Manage Alerts <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                            <div class="anomaly-mini-list" id="mini-anomalies-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                        <div class="panel-card recommendations-card">
+                            <div class="panel-header">
+                                <h3>AI Actionable Insights</h3>
+                            </div>
+                            <div class="insights-list" id="dashboard-insights">
+                                <div class="insight-item urgent">
+                                    <i class="fa-solid fa-triangle-exclamation icon"></i>
+                                    <div class="insight-content">
+                                        <h4>Congestion Spike: Downtown Sector</h4>
+                                        <p>Traffic delays are 18% higher than average on Route 9. Recommend activating Smart Signal Synchronization.</p>
+                                    </div>
+                                    <button class="insight-btn" id="quick-action-signal">Optimize Signals</button>
+                                </div>
+                                <div class="insight-item info">
+                                    <i class="fa-solid fa-circle-info icon"></i>
+                                    <div class="insight-content">
+                                        <h4>Peak Energy Forecast</h4>
+                                        <p>High grid demand expected between 4:00 PM and 7:00 PM. Recommend releasing municipal solar reserves.</p>
+                                    </div>
+                                    <button class="insight-btn" id="quick-action-solar">Enable Solar Reserve</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-card telemetry-card">
+                            <div class="panel-header">
+                                <h3>Live Operations Telemetry</h3>
+                                <span class="badge-tag live-badge"><span class="dot-blink"></span> LIVE FEED</span>
+                            </div>
+                            <div class="telemetry-feed" id="live-telemetry-list">
+                                <!-- Telemetry logs populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: SCENARIO SIMULATOR -->
+                <section class="tab-content" id="simulator-tab">
+                    <div class="simulator-layout">
+                        <!-- Toggles Control Panel -->
+                        <div class="panel-card sim-control-panel">
+                            <h3>Scenario Policy Center</h3>
+                            <p class="panel-desc">Combine policies and simulate their long-term predictive outcomes on community metrics.</p>
+                            
+                            <div class="policy-group">
+                                <h4>Transportation & Mobility</h4>
+                                <div class="switch-row">
+                                    <div class="switch-info">
+                                        <label for="policy-signals">Smart Traffic Signals</label>
+                                        <span class="desc">Sync traffic lights in high-density corridors using AI.</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="policy-signals">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="switch-row">
+                                    <div class="switch-info">
+                                        <label for="policy-transit">Transit Frequency Expansion</label>
+                                        <span class="desc">Increase bus/metro frequencies by 30%.</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="policy-transit">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="policy-group">
+                                <h4>Green Infrastructure & Climate</h4>
+                                <div class="switch-row">
+                                    <div class="switch-info">
+                                        <label for="policy-solar">Solar Grid Mandate</label>
+                                        <span class="desc">Add solar storage capacity to public buildings.</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="policy-solar">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                                <div class="switch-row">
+                                    <div class="switch-info">
+                                        <label for="policy-greenery">Urban Micro-Forests</label>
+                                        <span class="desc">Convert 5 unused parking lots into pocket parks.</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="policy-greenery">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="policy-group">
+                                <h4>Crisis & Crisis Planning</h4>
+                                <div class="switch-row">
+                                    <div class="switch-info">
+                                        <label for="policy-crisis">Weather Alert / Congestion Lock</label>
+                                        <span class="desc">Simulate a severe flood alert triggering road blockages.</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="policy-crisis">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-secondary btn-full" id="reset-policies-btn">
+                                <i class="fa-solid fa-rotate-left"></i> Reset All Policies
+                            </button>
+                        </div>
+
+                        <!-- Predictive Impact Display -->
+                        <div class="panel-card sim-results-panel">
+                            <h3>Predictive Outcome Modeling</h3>
+                            <p class="panel-desc">Calculated impact metrics based on chosen policy combination.</p>
+
+                            <div class="sim-metrics-display">
+                                <div class="sim-metric-progress">
+                                    <div class="progress-info">
+                                        <span>Travel Delay Reduction</span>
+                                        <span id="sim-delta-mobility" class="val neutral">0%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar" id="bar-mobility" style="width: 50%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="sim-metric-progress">
+                                    <div class="progress-info">
+                                        <span>Carbon Emission Reduction</span>
+                                        <span id="sim-delta-emissions" class="val neutral">0%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar" id="bar-emissions" style="width: 50%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="sim-metric-progress">
+                                    <div class="progress-info">
+                                        <span>Energy Cost Savings</span>
+                                        <span id="sim-delta-energy" class="val neutral">0%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar" id="bar-energy" style="width: 50%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="sim-metric-progress">
+                                    <div class="progress-info">
+                                        <span>Citizen Comfort & Wellness</span>
+                                        <span id="sim-delta-citizen" class="val neutral">0%</span>
+                                    </div>
+                                    <div class="progress-bar-bg">
+                                        <div class="progress-bar" id="bar-citizen" style="width: 50%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sim-report-box">
+                                <h4><i class="fa-solid fa-wand-magic-sparkles"></i> AI Impact Forecast Summary</h4>
+                                <div id="sim-ai-summary">
+                                    <p>Select policies on the left panel to begin simulating outcomes. AI will evaluate metric correlations and construct a predictive assessment here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: CONVERSATIONAL AI -->
+                <section class="tab-content" id="chat-tab">
+                    <div class="chat-layout">
+                        <!-- Navigation / Category Sidebar -->
+                        <div class="panel-card chat-side-panel">
+                            <h3>Civic Knowledge Assistant</h3>
+                            <p class="panel-desc">Ask questions about civic analytics, public reports, or current simulations.</p>
+                            
+                            <div class="suggested-queries">
+                                <h4>Suggested Enquiries</h4>
+                                <div class="query-category">
+                                    <span><i class="fa-solid fa-car"></i> Mobility</span>
+                                    <button class="quick-query-btn">What's causing traffic delays right now?</button>
+                                    <button class="quick-query-btn">How does smart transit impact commuters?</button>
+                                </div>
+                                <div class="query-category">
+                                    <span><i class="fa-solid fa-cloud-sun"></i> Climate</span>
+                                    <button class="quick-query-btn">What is our current air quality status?</button>
+                                    <button class="quick-query-btn">Explain environmental impact of pocket parks.</button>
+                                </div>
+                                <div class="query-category">
+                                    <span><i class="fa-solid fa-database"></i> Systems & Plans</span>
+                                    <button class="quick-query-btn">Summarize the 2026 Solar Mandate Report.</button>
+                                    <button class="quick-query-btn">What automation playbooks are ready?</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chat Interface -->
+                        <div class="chat-main-panel">
+                            <!-- Conversations area -->
+                            <div class="panel-card chat-window">
+                                <div class="chat-header-bar">
+                                    <div class="chat-assistant-meta">
+                                        <div class="assistant-avatar">
+                                            <i class="fa-solid fa-robot"></i>
+                                        </div>
+                                        <div>
+                                            <h4>Gemini AI Core</h4>
+                                            <p id="chat-sub-status">Ready | Context: City Baseline Data</p>
+                                        </div>
+                                    </div>
+                                    <div class="chat-actions">
+                                        <button class="chat-tool-btn" id="clear-chat-btn" title="Clear History">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="chat-messages" id="chat-messages-container">
+                                    <!-- Messages populate dynamically -->
+                                    <div class="message system-msg">
+                                        <div class="msg-content">
+                                            Hello! I am your AI Civic Assistant. I have read the active city data and document index. Ask me to run simulations, analyze metrics, retrieve document details, or compile civic briefings.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="chat-input-area">
+                                    <input type="text" id="chat-user-input" placeholder="Type an inquiry (e.g. 'Synthesize grid load projections' or 'How does transit reduction affect emissions?')..." autocomplete="off">
+                                    <button class="btn btn-primary" id="chat-send-btn">
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Vector RAG Retrieval Visualizer -->
+                            <div class="panel-card rag-visualizer-panel">
+                                <div class="rag-header">
+                                    <h4><i class="fa-solid fa-network-wired"></i> Vector Database RAG Retrieval Visualizer</h4>
+                                    <span class="rag-status-tag" id="rag-status">Idle</span>
+                                </div>
+                                <div class="rag-visualizer-body" id="rag-visualizer-content">
+                                    <p class="empty-state">When you submit a query, the RAG engine searches semantic embeddings of city guidelines and reports, showing similarity scores and document chunks here.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: AUTOMATION HUB -->
+                <section class="tab-content" id="automation-tab">
+                    <div class="automation-layout">
+                        <!-- Active Alert Feed -->
+                        <div class="panel-card alerts-panel">
+                            <h3>Active Anomaly Monitoring</h3>
+                            <p class="panel-desc">Real-time alerts triggered by environmental sensors, traffic cameras, and energy grids.</p>
+                            
+                            <div class="alerts-list" id="anomalies-full-list">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Investigation and Playbook Console -->
+                        <div class="panel-card console-panel">
+                            <div class="console-header">
+                                <h3>AI Root Cause & Playbook Execution</h3>
+                                <span class="badge badge-warning" id="active-incident-label">No Incident Selected</span>
+                            </div>
+                            
+                            <div id="empty-console-state" class="console-content empty">
+                                <i class="fa-solid fa-clipboard-question"></i>
+                                <p>Select an active anomaly alert from the left panel to run diagnostics and execute automated playbooks.</p>
+                            </div>
+
+                            <div id="active-console-content" class="console-content hide">
+                                <div class="rca-section">
+                                    <h4><i class="fa-solid fa-microchip"></i> AI Root Cause Analysis (RCA)</h4>
+                                    <p id="rca-description">Analyzing incident...</p>
+                                    <div class="impact-metrics-row" id="rca-impact-tags">
+                                        <!-- Affected stats -->
+                                    </div>
+                                </div>
+
+                                <div class="playbook-section">
+                                    <h4><i class="fa-solid fa-gears"></i> Intelligent Orchestration Playbook</h4>
+                                    <div class="playbook-meta">
+                                        <span class="playbook-name" id="playbook-title">Loading playbook...</span>
+                                        <button class="btn btn-primary btn-sm" id="execute-playbook-btn">
+                                            <i class="fa-solid fa-play"></i> Execute Playbook
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="terminal-log-window">
+                                        <div class="terminal-header">
+                                            <span class="dot red"></span>
+                                            <span class="dot yellow"></span>
+                                            <span class="dot green"></span>
+                                            <span class="terminal-title">Workflow Execution Logs</span>
+                                        </div>
+                                        <div class="terminal-body" id="automation-terminal-logs">
+                                            <div class="log-line text-muted">> Ready to execute...</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 5: RAG & DATA HUB -->
+                <section class="tab-content" id="data-explorer-tab">
+                    <div class="data-hub-layout">
+                        <!-- Vector Document Index -->
+                        <div class="panel-card doc-index-panel">
+                            <h3>Vector Document Index (RAG)</h3>
+                            <p class="panel-desc">These source documents are chunked, embedded, and indexed in the platform's local vector database for AI retrieval.</p>
+                            
+                            <div class="documents-list" id="documents-list-container">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Data Upload & Simulator -->
+                        <div class="panel-card dataset-upload-panel">
+                            <h3>Load Custom Civic Data</h3>
+                            <p class="panel-desc">Paste a public planning document or survey report to automatically index it in the Vector Database.</p>
+                            
+                            <form id="upload-doc-form">
+                                <div class="form-group">
+                                    <label for="upload-title">Document Title</label>
+                                    <input type="text" id="upload-title" placeholder="e.g. Smart City Housing Plan 2026" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="upload-category">Domain Category</label>
+                                    <select id="upload-category">
+                                        <option value="mobility">Transportation & Mobility</option>
+                                        <option value="environment">Environment & AQI</option>
+                                        <option value="energy">Utilities & Energy</option>
+                                        <option value="safety">Public Safety</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="upload-content">Document Text Content</label>
+                                    <textarea id="upload-content" rows="6" placeholder="Paste report text here. For example: 'The smart grid initiative aims to increase municipal solar power contributions to 45% by deploying micro-grids in Sector 7 and 9. It will mitigate blackouts by reserving 5MW of battery power.'" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-full">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Chunk, Embed & Vectorize Document
+                                </button>
+                            </form>
+
+                            <div class="notification-box success hide" id="upload-success-msg">
+                                <i class="fa-solid fa-circle-check"></i> Document processed! 3 new chunks added to the vector index.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 6: SETTINGS -->
+                <section class="tab-content" id="settings-tab">
+                    <div class="settings-layout">
+                        <!-- General Settings -->
+                        <div class="panel-card settings-card">
+                            <h3>Theme & Design Customization</h3>
+                            <p class="panel-desc">Adjust the visual aesthetics of the Decision Intelligence Platform.</p>
+                            
+                            <div class="theme-selector-grid">
+                                <div class="theme-card active" data-theme="theme-glass-dark" id="theme-btn-glass-dark">
+                                    <div class="theme-preview glass-dark"></div>
+                                    <span>Glass Dark (Default)</span>
+                                </div>
+                                <div class="theme-card" data-theme="theme-cyberpunk" id="theme-btn-cyberpunk">
+                                    <div class="theme-preview cyberpunk"></div>
+                                    <span>Cyberpunk Neon</span>
+                                </div>
+                                <div class="theme-card" data-theme="theme-emerald" id="theme-btn-emerald">
+                                    <div class="theme-preview emerald"></div>
+                                    <span>Emerald Sustainable</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- API Configuration Settings -->
+                        <div class="panel-card settings-card">
+                            <h3>Google Cloud & Gemini API Key</h3>
+                            <p class="panel-desc">Connect the platform to the live Gemini generative model to answer custom questions beyond the built-in simulation scenarios.</p>
+                            
+                            <div class="settings-form">
+                                <div class="switch-row border-bottom">
+                                    <div class="switch-info">
+                                        <label for="toggle-live-api">Enable Live Gemini API Mode</label>
+                                        <span class="desc">Connect directly to Google's generative models using an API key. If disabled, local heuristics engine is used.</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-live-api">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="switch-row border-bottom">
+                                    <div class="switch-info">
+                                        <label for="toggle-alert-spawner">Enable Dynamic Alert Spawner</label>
+                                        <span class="desc">Simulate live incidents triggering randomly in the background with audio alerts.</span>
+                                    </div>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-alert-spawner" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="form-group" id="api-key-container">
+                                    <label for="gemini-api-key">Gemini API Key</label>
+                                    <div class="password-input-wrapper">
+                                        <input type="password" id="gemini-api-key" placeholder="AIzaSy...">
+                                        <button type="button" class="btn-toggle-visibility" id="toggle-api-key-vis">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
+                                    </div>
+                                    <span class="help-text">Your API key is saved securely in your browser's local storage and is sent directly to Google APIs.</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="gemini-model-select">Model Selection</label>
+                                    <select id="gemini-model-select">
+                                        <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recommended)</option>
+                                        <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+                                    </select>
+                                </div>
+
+                                <button class="btn btn-primary" id="save-settings-btn">Save Configurations</button>
+                                <span class="save-status-text" id="save-settings-status"></span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+            
+            <!-- Global Footer -->
+            <footer class="app-footer-bar">
+                <div class="footer-left">
+                    <span>CivicPulse AI Dashboard v1.0.0</span>
+                    <span class="divider">|</span>
+                    <a href="https://github.com/KushalGupta-07/Decision-Intelligence-Platform" target="_blank" class="footer-link"><i class="fa-brands fa-github"></i> Repository</a>
+                </div>
+                <div class="footer-right">
+                    <span>Designed for Intelligent Community Well-being</span>
+                </div>
+            </footer>
+        </div>
+    </div>
+    
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-alerts-container"></div>
+
+    <!-- Script Bundle -->
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
