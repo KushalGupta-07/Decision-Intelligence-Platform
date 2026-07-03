@@ -1,0 +1,21 @@
+@startuml
+"Decision Intelligence Platform - Sequence Diagram (AI Chat + RAG)"
+skinparam defaultFontName Arial
+skinparam dpi 150
+
+actor User
+participant Browser
+participant Backend
+participant "Vector DB" as VectorDB
+participant "AI Provider" as AI
+
+User -> Browser : Open chat & ask question
+Browser -> Backend : POST /chat {query, contextRefs}
+Backend -> VectorDB : search(query)
+VectorDB --> Backend : top-k documents
+Backend -> AI : chat_completion(prompt + docs)
+AI --> Backend : response
+Backend --> Browser : chat response
+Browser --> User : display answer
+
+@enduml

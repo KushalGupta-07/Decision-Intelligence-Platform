@@ -1,0 +1,25 @@
+@startuml
+"Decision Intelligence Platform - Deployment Diagram"
+skinparam defaultFontName Arial
+skinparam dpi 150
+
+box "Deployment Diagram" #LightSteelBlue {
+  node "User Device" as UserDevice
+  node "CDN / Edge" as CDN
+  node "Static Hosting (S3 / Netlify / Vercel)" as Hosting
+  node "Optional Backend Services" as Backend {
+    [AI Proxy / API Gateway]
+    [Auth Service]
+    [Telemetry Collector]
+    [Document Store / RAG Index (e.g., Vector DB)]
+  }
+
+  UserDevice --> CDN : "GET app bundle"
+  CDN --> Hosting : "cached assets / SPA"
+  UserDevice --> Hosting : "loads SPA"
+  UserDevice --> Backend : "API calls / LLM proxy / telemetry"
+  Backend --> "AI Provider" : "LLM requests"
+  Backend --> "Vector DB" : "RAG queries"
+}
+
+@enduml

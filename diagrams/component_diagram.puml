@@ -1,0 +1,39 @@
+@startuml
+"Decision Intelligence Platform - Component Diagram"
+skinparam defaultFontName Arial
+skinparam dpi 150
+
+box "Component Diagram" #LightBlue {
+  node "Browser (UI)" as Browser {
+    component "Dashboard UI" as Dashboard
+    component "Scenario Simulator" as Simulator
+    component "AI Chat Assistant (client)" as ChatClient
+    component "Automation & Orchestration UI" as AutomationUI
+    component "Data Explorer (RAG client)" as DataExplorer
+  }
+
+  rectangle "Frontend Libraries" as Libs #LightYellow {
+    [Vite]
+    [Chart.js]
+    [Font Awesome]
+  }
+
+  rectangle "Local Data & Simulation" as LocalData #LightGreen {
+    [Static JSON / Client-side Models]
+  }
+
+  rectangle "External Services" as External #LightCoral {
+    [AI API (LLM)]
+    [Telemetry / Analytics]
+    [Identity / Auth]
+  }
+
+  Browser --> Libs
+  Dashboard --> LocalData
+  Simulator --> LocalData
+  ChatClient --> External : "LLM requests (RAG optional)"
+  DataExplorer --> External : "Doc store / RAG retrieval"
+  AutomationUI --> External : "Alerts / Webhooks"
+}
+
+@enduml

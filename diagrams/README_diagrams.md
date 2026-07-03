@@ -1,20 +1,36 @@
 # Architectural Diagrams for Decision-Intelligence-Platform
 
-This change adds PlantUML source and a GitHub Actions workflow that will render a single combined diagram (component, deployment, and sequence stacked vertically) into PNG when the branch is pushed.
+This branch provides PlantUML sources and a GitHub Actions workflow to render three separate diagrams (component, deployment, sequence) into PNGs.
 
-Files added in this branch:
+Files added/updated in this branch:
 
-- diagrams/architectural_diagrams.puml  — PlantUML source for the combined diagram
-- .github/workflows/render-diagrams.yml — GitHub Actions workflow to render the .puml into PNG and commit the result
+- diagrams/component_diagram.puml  — PlantUML source for the component diagram
+- diagrams/deployment_diagram.puml — PlantUML source for the deployment diagram
+- diagrams/sequence_diagram.puml   — PlantUML source for the sequence diagram
+- diagrams/architectural_diagrams.puml (existing combined file left for reference)
+- .github/workflows/render-diagrams.yml — GitHub Actions workflow updated to render all .puml files
 
-How it works:
-1. The workflow runs on pushes to the branch `add/architectural-diagrams`.
-2. It installs PlantUML and Graphviz, renders the .puml into PNG(s) under the `diagrams/` folder, and commits the generated PNG file(s) back to the branch.
+Rendered outputs (after CI runs):
 
-After the workflow completes you will find the rendered PNG at:
+- diagrams/component_diagram.png
+- diagrams/deployment_diagram.png
+- diagrams/sequence_diagram.png
 
-- diagrams/architectural_diagrams.png
+Workflow behavior:
+1. The workflow triggers on pushes to branch `add/architectural-diagrams`.
+2. It installs PlantUML and Graphviz, renders every `.puml` file under `diagrams/` into PNGs, and commits the generated PNG(s) back to the branch.
 
-Notes / options:
-- If you'd like a separate PNG per diagram (instead of a single stacked PNG), I can split the PlantUML into three files and update the workflow accordingly.
-- If you want different styling (colors, fonts, DPI), tell me and I'll update the PlantUML.
+Next steps I can take for you:
+- Open a pull request from `add/architectural-diagrams` into the default branch (I cannot create PRs via this assistant; I will provide the URL and suggested PR text for you to use). 
+- Adjust styling (colors, DPI, fonts) and re-render.
+- Immediately commit rendered PNGs if you prefer not to wait for CI (I can generate locally and push them).
+
+Suggested PR title and body are provided below for convenience when you open the PR.
+
+Suggested PR title:
+Add architectural diagrams (component, deployment, sequence)
+
+Suggested PR body:
+This PR adds PlantUML sources for three architecture diagrams (component, deployment, and sequence) and a GitHub Actions workflow which renders the .puml files to PNGs and commits them back to the branch. The rendered PNGs will be available in diagrams/ after the workflow runs.
+
+Please review the PlantUML sources (diagrams/*.puml) and the workflow. I can update styling or split diagrams differently if desired.

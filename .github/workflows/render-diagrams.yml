@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   render:
-    name: Render and commit PlantUML PNG
+    name: Render and commit PlantUML PNGs
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,7 +24,7 @@ jobs:
       - name: Render PlantUML to PNG
         run: |
           mkdir -p diagrams/output || true
-          plantuml -tpng diagrams/architectural_diagrams.puml -o diagrams
+          plantuml -tpng diagrams/*.puml -o diagrams
       - name: Commit generated PNGs
         run: |
           git config user.name "github-actions[bot]"
