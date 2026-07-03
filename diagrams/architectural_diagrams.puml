@@ -1,0 +1,78 @@
+@startuml
+"Decision Intelligence Platform - Combined Diagrams"
+skinparam defaultFontName Arial
+skinparam dpi 150
+
+' ----- Component Diagram (top) -----
+box "Component Diagram" #LightBlue {
+  node "Browser (UI)" as Browser {
+    component "Dashboard UI" as Dashboard
+    component "Scenario Simulator" as Simulator
+    component "AI Chat Assistant (client)" as ChatClient
+    component "Automation & Orchestration UI" as AutomationUI
+    component "Data Explorer (RAG client)" as DataExplorer
+  }
+
+  rectangle "Frontend Libraries" as Libs #LightYellow {
+    [Vite]
+    [Chart.js]
+    [Font Awesome]
+  }
+
+  rectangle "Local Data & Simulation" as LocalData #LightGreen {
+    [Static JSON / Client-side Models]
+  }
+
+  rectangle "External Services" as External #LightCoral {
+    [AI API (LLM)]
+    [Telemetry / Analytics]
+    [Identity / Auth]
+  }
+
+  Browser --> Libs
+  Dashboard --> LocalData
+  Simulator --> LocalData
+  ChatClient --> External : "LLM requests (RAG optional)"
+  DataExplorer --> External : "Doc store / RAG retrieval"
+  AutomationUI --> External : "Alerts / Webhooks"
+}
+
+' ----- Deployment Diagram (middle) -----
+box "Deployment Diagram" #LightSteelBlue {
+  node "User Device" as UserDevice
+  node "CDN / Edge" as CDN
+  node "Static Hosting (S3 / Netlify / Vercel)" as Hosting
+  node "Optional Backend Services" as Backend {
+    [AI Proxy / API Gateway]
+    [Auth Service]
+    [Telemetry Collector]
+    [Document Store / RAG Index (e.g., Vector DB)]
+  }
+
+  UserDevice --> CDN : "GET app bundle"
+  CDN --> Hosting : "cached assets / SPA"
+  Browser --> Hosting : "loads SPA"
+  Browser --> Backend : "API calls / LLM proxy / telemetry"
+  Backend --> "AI Provider" : "LLM requests"
+  Backend --> "Vector DB" : "RAG queries"
+}
+
+' ----- Sequence Diagram (bottom) -----
+box "Typical AI Chat + RAG Flow (Sequence)" #LightSalmon {
+  actor User
+  participant Browser
+  participant Backend
+  participant "Vector DB" as VectorDB
+  participant "AI Provider" as AI
+
+  User -> Browser : Open chat & ask question
+  Browser -> Backend : POST /chat {query, contextRefs}
+  Backend -> VectorDB : search(query)
+  VectorDB --> Backend : top-k documents
+  Backend -> AI : chat_completion(prompt + docs)
+  AI --> Backend : response
+  Backend --> Browser : chat response
+  Browser --> User : display answer
+}
+
+@enduml

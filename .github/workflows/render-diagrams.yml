@@ -1,0 +1,38 @@
+name: Render PlantUML Diagrams
+
+on:
+  push:
+    branches:
+      - add/architectural-diagrams
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    name: Render and commit PlantUML PNG
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: true
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y plantuml graphviz
+      - name: Render PlantUML to PNG
+        run: |
+          mkdir -p diagrams/output || true
+          plantuml -tpng diagrams/architectural_diagrams.puml -o diagrams
+      - name: Commit generated PNGs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add diagrams/*.png || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Render PlantUML diagrams"
+            git push
+          fi
